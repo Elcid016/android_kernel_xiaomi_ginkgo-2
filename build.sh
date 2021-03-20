@@ -1,14 +1,14 @@
 echo -e "\nStarting compilation...\n"
 # ENV
 R=n
-while read -p "You want to build for MIUI/Q or OOS? (q/oos) " bchoice; do
+while read -p "You want to build for MIUI or Q? (miui/q) " bchoice; do
 case "$bchoice" in
- q|Q)
-  S="Q"
+ miui|MIUI)
+  S="MIUI•Q"
   break
  ;;
- oos|OOS)
-  S="OOS"
+ q|Q)
+  S="Q"
   R=y
   export CONFIG_THINLTO=y
   git cp -s 3679d8fbfbf11151109c71eb4308a21d4fb854ab
@@ -51,10 +51,10 @@ clang_build () {
                           CC="clang" \
                           AR="llvm-ar" \
                           NM="llvm-nm" \
-			   LD="ld.lld" \
-			   AS="llvm-as" \
-			   OBJCOPY="llvm-objcopy" \
-			   OBJDUMP="llvm-objdump" \
+                          LD="ld.lld" \
+                          AS="llvm-as" \
+                          OBJCOPY="llvm-objcopy" \
+                          OBJDUMP="llvm-objdump" \
                           CLANG_TRIPLE=aarch64-linux-gnu- \
                           CROSS_COMPILE=$CROSS_COMPILE \
                           CROSS_COMPILE_ARM32=$CROSS_COMPILE_ARM32
@@ -65,14 +65,15 @@ make O=$out ARCH=arm64 $CONFIG > /dev/null
 echo -e "${bold}Compiling with CLANG${normal}\n$KBUILD_COMPILER_STRING"
 echo -e "\nCompiling $ZIPNAME\n"
 clang_build
-if [ -f "$out/arch/arm64/boot/Image.gz-dtb" ] && [ -f "$out/arch/arm64/boot/dtbo.img" ]; then
+if [ -f "$out/arch/arm64/boot/Image.gz" ] && [ -f "$out/arch/arm64/boot/dtbo.img" ] && [ -f "$out/arch/arm64/boot/dts/qcom/trinket.dtb" ]; then
  echo -e "\nKernel compiled succesfully! Zipping up...\n"
  ZIPNAME="SixTeen•Kernel•"$S"•Ginklow-$(date '+%Y%m%d-%H%M').zip"
  if [ ! -d AnyKernel3 ]; then
-  git clone -q https://github.com/HafizZiq/AnyKernel3 -b sixteen
+  git clone -q https://github.com/HafizZiq/AnyKernel3 --depth=1 -b sixteen
  fi;
- mv -f $out/arch/arm64/boot/Image.gz-dtb AnyKernel3
- mv -f $out/arch/arm64/boot/dtbo.img AnyKernel3
+ cp -f $out/arch/arm64/boot/Image.gz AnyKernel3
+ cp -f $out/arch/arm64/boot/dtbo.img AnyKernel3
+ cp -f $out/arch/arm64/boot/dts/qcom/trinket.dtb AnyKernel3/dtb
  cd AnyKernel3
  zip -r9 "$HOME/$ZIPNAME" *
  cd ..
