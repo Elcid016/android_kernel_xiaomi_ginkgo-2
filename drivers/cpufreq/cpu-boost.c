@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2013-2015,2017, The Linux Foundation. All rights reserved.
+ * Copyright (C) 2021 XiaoMi, Inc.
  * Copyright (c) 2017-2018, Paranoid Android.
  * Copyright (C) 2017-2018, Razer Inc.
  *
@@ -39,6 +40,9 @@ static DEFINE_PER_CPU(struct cpu_sync, sync_info);
 
 static struct kthread_work input_boost_work;
 
+static struct kthread_work powerkey_input_boost_work;
+
+static struct work_struct powerkey_input_boost_work;
 static bool input_boost_enabled;
 
 static unsigned int input_boost_ms = 40;
