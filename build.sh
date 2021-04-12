@@ -1,25 +1,5 @@
 echo -e "\nStarting compilation...\n"
 # ENV
-R=n
-while read -p "You want to build for MIUI or Q? (miui/r) " bchoice; do
-case "$bchoice" in
- miui|MIUI)
-  S="MIUI•R"
-  break
- ;;
- r|R)
-  S="R"
-  R=y
-  git cp -s 025c3cec8ef23a50348a03ac4e181ff843199b1c
-  break
- ;;
- *)
-  echo
-  echo "Try again please!"
-  echo
- ;;
-esac
-done
 CONFIG=vendor/sixteen_defconfig
 KERNEL_DIR=$(pwd)
 PARENT_DIR="$(dirname "$KERNEL_DIR")"
@@ -64,15 +44,14 @@ make O=$out ARCH=arm64 $CONFIG > /dev/null
 echo -e "${bold}Compiling with CLANG${normal}\n$KBUILD_COMPILER_STRING"
 echo -e "\nCompiling $ZIPNAME\n"
 clang_build
-if [ -f "$out/arch/arm64/boot/Image.gz" ] && [ -f "$out/arch/arm64/boot/dtbo.img" ] && [ -f "$out/arch/arm64/boot/dts/qcom/trinket.dtb" ]; then
+if [ -f "$out/arch/arm64/boot/Image.gz-dtb" ] && [ -f "$out/arch/arm64/boot/dtbo.img" ]; then
  echo -e "\nKernel compiled succesfully! Zipping up...\n"
- ZIPNAME="SixTeen•Kernel•"$S"•Ginklow-$(date '+%Y%m%d-%H%M').zip"
+ ZIPNAME="SixTeen•Kernel•R•Ginklow-$(date '+%Y%m%d-%H%M').zip"
  if [ ! -d AnyKernel3 ]; then
   git clone -q https://github.com/HafizZiq/AnyKernel3 --depth=1 -b sixteen
  fi;
- cp -f $out/arch/arm64/boot/Image.gz AnyKernel3
+ cp -f $out/arch/arm64/boot/Image.gz-dtb AnyKernel3
  cp -f $out/arch/arm64/boot/dtbo.img AnyKernel3
- cp -f $out/arch/arm64/boot/dts/qcom/trinket.dtb AnyKernel3/dtb
  cd AnyKernel3
  zip -r9 "$HOME/$ZIPNAME" *
  cd ..
@@ -82,8 +61,5 @@ if [ -f "$out/arch/arm64/boot/Image.gz" ] && [ -f "$out/arch/arm64/boot/dtbo.img
  rm -rf $out
 else
  echo -e "\nCompilation failed!\n"
-fi;
-if [ $R == y ]; then
- git rs --hard $(git log --pretty=oneline|head -n2|tail -n1|awk '{ print $1}')
 fi;
 exit 0
