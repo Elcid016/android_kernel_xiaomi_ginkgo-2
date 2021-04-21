@@ -558,6 +558,7 @@ static void thermal_zone_device_check(struct work_struct *work)
 						      poll_queue.work);
 	thermal_zone_device_update(tz, THERMAL_EVENT_UNSPECIFIED);
 }
+
 #ifdef CONFIG_THERMAL_SWITCH
 #define to_thermal_msg_device(_dev)	\
 	container_of(_dev, struct thermal_message_device, device)
@@ -585,15 +586,18 @@ sconfig_store(struct device *dev, struct device_attribute *devattr,
 }
 
 static DEVICE_ATTR(sconfig,0644,sconfig_show,sconfig_store);
-//Add 3C state node  --shenwei 18.12.11
-static ssize_t temp_state_show(struct device *dev, struct device_attribute *devattr,
+
+//Add 3C state node
+static ssize_t
+temp_state_show(struct device *dev, struct device_attribute *devattr,
 		       char *buf){
 	struct thermal_message_device *thermal_msg = to_thermal_msg_device(dev);
 
 	return sprintf(buf,"%d\n",thermal_msg->temp_state);
 }
 
-static ssize_t temp_state_store(struct device *dev, struct device_attribute *devattr,
+static ssize_t
+temp_state_store(struct device *dev, struct device_attribute *devattr,
 		const char *buf, size_t count){
 	int temp_state;
 	struct thermal_message_device *thermal_msg = to_thermal_msg_device(dev);
@@ -1697,6 +1701,7 @@ int thermal_message_device_register(void) {
 	if (result)
 		goto unregister;
 
+
 	return result;
 
 unregister:
@@ -1706,7 +1711,7 @@ unregister:
 
 
 void thermal_message_device_unregister(void) {
-
+	//Do nothing
 }
 #endif //CONFIG_THERMAL_SWITCH
 
