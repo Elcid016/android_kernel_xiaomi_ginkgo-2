@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+ * Copyright (C) 2021 XiaoMi, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -191,11 +192,11 @@
 	qcom,charger-temp-max = <800>;
 	qcom,smb-temp-max = <800>;
 	qcom,auto-recharge-soc = <99>;
-	qcom,flash-disable-soc = <10>;
+	qcom,flash-disable-soc = <0>;
 	qcom,hw-die-temp-mitigation;
 	qcom,float-option = <1>;
-	qcom,thermal-mitigation = <3000000 2500000 2200000 
-			2000000 1500000 1000000 800000 500000 200000>;
+	qcom,thermal-mitigation = <3000000 2500000 2000000
+			2000000 1500000 900000 800000 500000 100000>;
 };
 
 &usb0 {

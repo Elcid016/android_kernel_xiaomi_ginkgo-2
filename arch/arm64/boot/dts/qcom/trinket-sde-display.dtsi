@@ -1,4 +1,5 @@
 /* Copyright (c) 2019 - 2020, The Linux Foundation. All rights reserved.
+ * Copyright (C) 2021 XiaoMi, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -32,8 +33,8 @@
 			qcom,supply-max-voltage = <1800000>;
 			qcom,supply-enable-load = <62000>;
 			qcom,supply-disable-load = <80>;
-			qcom,supply-post-on-sleep = <20>;
-			qcom,supply-pre-off-sleep = <20>;
+			qcom,supply-post-on-sleep = <1>;
+			qcom,supply-pre-off-sleep = <15>;
 		};
 
 		qcom,panel-supply-entry@1 {
@@ -44,6 +45,7 @@
 			qcom,supply-enable-load = <100000>;
 			qcom,supply-disable-load = <100>;
 			qcom,supply-pre-off-sleep = <10>;
+			qcom,supply-post-on-sleep = <3>;
 		};
 
 		qcom,panel-supply-entry@2 {
@@ -53,7 +55,7 @@
 			qcom,supply-max-voltage = <6000000>;
 			qcom,supply-enable-load = <100000>;
 			qcom,supply-disable-load = <100>;
-			qcom,supply-post-on-sleep = <20>;
+			qcom,supply-pre-off-sleep = <20>;
 		};
 	};
 
